@@ -74,12 +74,21 @@ def get_planet(planets_id):
     planets = Planets.query.get(planets_id)
     return jsonify(planets.serialize()), 200
 
+
 @app.route('/favorites/planet/<int:planet_id>', methods=['POST'])
 def get_Singleplanet(planet_id):
     data = request.get_json()
     id = planet_id
     add_planet = Planets(id=data["id"], orbit=data["orbit"])
     return jsonify(add_planet.serialize()), 200
+
+@app.route('/favorite/people/<int:planet_id>', methods=['POST'])
+def get_favoritePeople(people_id):
+    data = request.get_json()
+    id = people_id
+    add_people = People(id=data["id"])
+    return jsonify(add_people.serialize()), 200
+
 
 # this only runs if `$ python src/main.py` is executed
 if __name__ == '__main__':
