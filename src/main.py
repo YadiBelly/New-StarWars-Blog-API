@@ -75,19 +75,36 @@ def get_planet(planets_id):
     return jsonify(planets.serialize()), 200
 
 
-@app.route('/favorites/planet/<int:planet_id>', methods=['POST'])
+@app.route('/favorite/planet/<int:planet_id>', methods=['POST'])
 def get_Singleplanet(planet_id):
     data = request.get_json()
     id = planet_id
     add_planet = Planets(id=data["id"], orbit=data["orbit"])
     return jsonify(add_planet.serialize()), 200
 
-@app.route('/favorite/people/<int:planet_id>', methods=['POST'])
+@app.route('/favorite/people/<int:people_id>', methods=['POST'])
 def get_favoritePeople(people_id):
     data = request.get_json()
     id = people_id
-    add_people = People(id=data["id"])
+    add_people = People(id=data["id"], name=data["name"])
     return jsonify(add_people.serialize()), 200
+
+@app.route('/favorite/planet/<int:planet_id>', methods=['DELETE'])
+def delete_Singleplanet(planet_id):
+    id = planet_id
+    get_planet = Planets.query.get(id)
+    delete_planet = db.session.delete(get_planet)
+    db.session.commit()
+    return jsonify(get_planet.serialize()), 200
+
+@app.route('/favorite/people/<int:people_id>', methods=['DELETE'])
+def delete_favoritePeople(people_id):
+    id = people_id
+    get_people = People.query.get(id)
+    delete_people = db.session.delete(get_people)
+    db.session.commit()
+    return jsonify(get_people.serialize()), 200
+    
 
 
 # this only runs if `$ python src/main.py` is executed
